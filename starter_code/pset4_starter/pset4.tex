@@ -1,0 +1,525 @@
+% LaTeX handouts by Alex Tsun for CSE 312 Summer 2020
+% at the University of Washington.
+% Based on B. E. Burr's Stanford CS 109 problem set template.
+
+\documentclass[12pt]{article}
+
+\usepackage{newtxtext,newtxmath}
+
+\usepackage{amsmath}
+	% packages that allow mathematical formatting
+\usepackage{comment}
+  % comment out sections
+\usepackage{multicol}
+
+% -----------------------------------
+% -----------------------------------
+% -----------------------------------
+% USE FOR SETTING FLAG
+\usepackage{etoolbox}
+
+% -----------------------------------
+% -----------------------------------
+% -----------------------------------
+\def\sol#1{\textcolor{red}{#1}}
+
+
+\def\code#1{\textcolor{blue}{\texttt{#1}}}
+\def\todo#1{\textcolor{red}{\textbf{#1}}}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption,subcaption}
+
+\usepackage{tikz}
+	% package that allows you to include graphics
+
+\usepackage[hidelinks]{hyperref}
+	% and links
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+    % and algorithms
+
+
+\usepackage[tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in]{geometry}
+\frenchspacing
+	% one space after periods
+\raggedbottom
+	% don't put extra space between sections
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{14.5pt}
+	% allows custom headers
+
+\lhead{}
+\rhead{-- \thepage{} --}
+\cfoot{}
+	% page numbering
+
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\large\itshape\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries}
+\titleformat*{\paragraph}{\normalsize\bfseries}
+\titleformat*{\subparagraph}{\normalsize\bfseries}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{3mm plus 3mm minus 1mm}
+\titlespacing*{\section}{0pt}{2mm plus 4mm minus 1mm}{-2mm plus 1mm minus 0mm}
+\titlespacing*{\subsection}{0pt}{0mm plus 4mm minus 1mm}{-2mm plus 1mm minus 0mm}
+\titlespacing*{\subsubsection}{0pt}{0mm plus 4mm minus 1mm}{-2mm plus 1mm minus 0mm}
+\titlespacing*{\paragraph}{0pt}{0mm plus 3mm minus 1mm}{1mm plus 1mm minus 0mm}
+  % adjust fonts and spacing
+
+\usepackage{framed}
+\begin{comment}
+\newenvironment{framed}
+    {
+    \hspace*{-3mm}
+    \begin{tabular}{|p{\textwidth}|}
+    \hline
+    }
+    {
+    \\[2mm]\hline
+    \end{tabular}
+    \vspace*{-2mm}
+    }
+  % boxes around paragraphs with titles
+\end{comment}
+
+\usepackage{textpos}
+\usepackage[super]{nth}
+\usepackage{mathtools}
+\usepackage{mathdots}
+
+
+
+\usepackage{textcomp}
+  % \textonehalf for '8 1/2" x 11"'
+
+\usepackage{enumitem}
+% \setlist{nolistsep}
+  % configure display of enumerations [a), b), c)...]
+\usepackage[normalem]{ulem}
+  % \sout{} for strikethrough
+\usepackage{booktabs}
+\usepackage{diagbox}
+  % configure display of tables
+
+\newcommand{\vocab}[1]{\textbf{#1}}
+\renewcommand{\|}{\mid}
+
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\bigO}{O}
+
+\newcommand{\Uni}{\operatorname{Uni}}
+\newcommand{\Ber}{\operatorname{Ber}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\Geo}{\operatorname{Geo}}
+\newcommand{\NegBin}{\operatorname{NegBin}}
+\newcommand{\Zipf}{\operatorname{Zipf}}
+\newcommand{\HypG}{\operatorname{HypG}}
+\newcommand{\Poi}{\operatorname{Poi}}
+\newcommand{\Beta}{\operatorname{Beta}}
+\newcommand{\N}{\operatorname{N}}
+\newcommand{\Exp}{\operatorname{Exp}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\makeatletter
+\newcommand{\ack}[1]{\def \@ack {#1}}
+\newcommand{\handoutid}[1]{\def \@handoutid {#1}}
+\newcommand{\spaceadjust}[1]{\def \@spaceadjust {#1}}
+\makeatother
+
+\ack{}
+\handoutid{}
+\spaceadjust{0mm}
+
+{\title{PSet  \#4}}
+\handoutid{PSet \#4}
+
+\author{Alex Tsun}
+\date{Due: August 7, 2020}
+\ack{With problems from several past UW CSE 312 instructors (Martin Tompa, Anna Karlin, Larry Ruzzo) and Stanford CS 109 instructors (Chris Piech, David Varodayan, Lisa Yan, Mehran Sahami)\\}
+
+\usepackage[most]{tcolorbox}
+\tcbset{
+    frame code={},
+    colback=blue!10,
+    leftrule=0.5pt,
+    rightrule=0.5pt,
+    toprule=0.5pt,
+    bottomrule=0.5pt,
+    width=\dimexpr\textwidth\relax,
+    enlarge left by=0mm,
+    boxsep=5pt,
+    arc=0pt,outer arc=0pt,
+    breakable,
+    colframe=white,
+    }
+
+\begin{document}
+
+\makeatletter
+% the handout title goes here
+\begin{textblock*}{0.5\textwidth}(0\textwidth,0mm)
+\@author
+\end{textblock*}
+
+\begin{textblock*}{0.5\textwidth}(0\textwidth,5mm)
+CSE 312: Foundations of Computing II
+\end{textblock*}
+
+\begin{textblock*}{0.5\textwidth}(.5\textwidth,0mm)
+\hfill
+\@handoutid
+\end{textblock*}
+
+\begin{textblock*}{0.5\textwidth}(.5\textwidth,5mm)
+\hfill
+\@date
+\end{textblock*}
+
+\begin{center}
+\vspace*{2mm}
+{\Large \@title} \\
+\end{center}
+\vskip -9mm
+\vskip \@spaceadjust
+\rule{\textwidth}{0.5pt}
+
+\vspace*{-4mm}
+\hfill {\footnotesize \@ack}
+\makeatother
+
+\textbf{Name:} \todo{TODO: Your Name Here}
+
+\textbf{Collaborators}: \todo{TODO: List your collaborators outside your group.}
+
+\textbf{Groups}: This pset must be done \textbf{individually}. You are encouraged to discuss problem-solving strategies with other classmates as well as the course staff, but you must write up your own solutions. 
+
+\textbf{Instructions}: For each problem, remember you must briefly explain/justify how you obtained your answer, as correct answers without an explanation will receive \textbf{no credit}. Moreover, in the event of an incorrect answer, we can still try to give
+you partial credit based on the explanation you provide. It is fine for your answers to include
+summations, products, factorials, exponentials, or combinations; you don’t need to calculate those
+all out to get a single numeric answer.
+
+\textbf{Submission}: You must upload your written compiled LaTeX PDF to Gradescope under ``PSet 4 [Written]'' and your code file \code{cse312\_pset4\_mcmc.py} to ``PSet4 [Coding]''.  You must tag your written problems on Gradescope, or you will receive \textbf{no credit} as mentioned in the syllabus. Please cite any collaboration at the top of your submission.
+
+\begin{enumerate}
+
+% \item Let $X\sim Exp(\lambda)$ and $Y\sim\mathcal{N}(0,X^2)$ pset5 instead. https://www.overleaf.com/project/5e18b6b66447910001185a09 final
+
+\item We're running an experiment where we hold CSE 312 office hours for 2 straight days!
+\begin{enumerate}
+    \item  Suppose the number of ``customers'' on Monday is $X\sim Bin(n,p)$, and the number of customers on Tuesday is $Y\sim Bin(m,p)$, where $X,Y$ are independent. Let $Z=X+Y$ be the total number of customers across both days. What is the conditional PMF $P(X=k|Z=z)$ for integers $0\le k\le z$ and $z\ge 0$? Actually, $(X|Z=z)$ is a parametrized distribution we know. What is its name and what parameter(s) does it have? Explain in one sentence intuitively why this makes sense.  (Hint: You know the distribution of $Z$, and can look up its PMF!)
+    \item For this part, now instead assume $X\sim Poi(\lambda_1)$ and $Y\sim Poi(\lambda_2)$. What is the conditional PMF $P(X=k|Z=z)$ for integers $0\le k\le z$ and $z\ge 0$? Actually, $(X|Z=z)$ is a parametrized distribution we know. What is its name and what parameter(s) does it have? Explain in one sentence intuitively why this makes sense. (Hint: You know the distribution of $Z$, and can look up its PMF!)
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item You're running a drive-through slow-food chain called ``Exponential-Eats'',  You only have one chef, and he can only prepare one order at a time. Two orders come in simultaneously. Let $X\sim Exp(\lambda)$ be the amount of time it took to prepare the first order, and $Y\sim Exp(\lambda)$ be the amount of time it took to prepare the second order (after completing the first order), where $X,Y$ are independent. Let $Z=X+Y$ be the total time it took to prepare both orders. 
+\begin{enumerate}
+    \item Recall that $Z\sim Gamma(2,\lambda)$. Show that the density function of $Z=X+Y$ is indeed $f_Z(z)=\lambda^2 ze^{-\lambda z}$ for $z\ge 0$ using convolution.  Be \textit{very careful} with the limits of integration!
+    \item What is the conditional PDF, $f_{X|Z}(x|z)$, for $0\le x\le z$ and any $z>0$? Actually, $(X|Z=z)$ is a parametrized distribution we know. What is its name what parameter(s) does it have? Explain in one sentence intuitively why this makes sense.
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item Our ability to fight contagious diseases depends on our ability to model them. One person is initially \textit{exposed} to llama-flu. The following recursive function models the total number of individuals who will get \textit{infected} (which could actually be $0$ if the initially-exposed person is immune!). 
+
+\begin{algorithm}
+\caption{Llama Flu Disease Spread Model}
+\begin{algorithmic}[1]
+\Function{num\_infected}{\textsf{immune\_prob}}
+\State $\textsf{is\_immune}\gets Ber(\textsf{immune\_prob})$. \Comment{1 with probability \textsf{immune\_prob}, 0 otherwise}
+\If {\textsf{is\_immune} = 1:}
+    \Return 0 \Comment{No one is infected}
+\EndIf
+\State \textsf{spread} = 0
+\State $\textsf{num\_to\_expose}\gets Bin(n=50, p=0.22)$ \Comment{Can be any integer in $\{0,1,\dots,50\}$}
+\For {$i=1,\dots,\textsf{num\_to\_expose}$:}
+\State $\textsf{spread}\gets \textsf{spread} + \textsf{NUM\_INFECTED}(\textsf{immune\_prob})$
+\EndFor
+\Return \textsf{spread} + 1  \Comment{Including ourself}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+Compute the expected number of people \textit{infected} when $\textsf{immune\_prob}=0.91$ (this is just the expected return value when calling this function!). \textbf{Give your answer to 4 decimal places.} Hint: Be careful that the number of times we call this recursive function is \textit{random} and not fixed. You may want to use the result from the last example in 5.3 (\textcolor{blue}{\href{https://drive.google.com/file/d/1_obRAE1NxQY1mWJLPBFMInnb8_M1mt1-/view}{notes}}) about summing a random number of random variables. 
+
+\begin{tcolorbox}
+\todo{TODO: Your Solution Here}
+\end{tcolorbox}
+
+\item Recall the kittens and mittens problem from PSet 2: You have 8 pairs of mittens, each a different color. Left and right mittens are distinct. Suppose
+that you are fostering (possibly imaginary) kittens, and you leave them alone for a few hours
+with your mittens. When you return, you discover that they have hidden 4 mittens! Suppose
+that your kittens are equally likely to hide any 4 of your 16 distinct mittens. For $i=1,\dots,8$, let $X_i$ be the indicator/Bernoulli rv of whether or not pair $i$ is complete after this fiasco. Let $Y=\sum_{i=1}^{8}{X_i}$ be the \textit{total}
+number of complete pairs of mittens that you have left.
+
+\begin{enumerate}
+    \item What is the covariance matrix $\Sigma$ of the $8$-dimensional random vector of indicators $\mathbf{X}=(X_1,\dots,X_{8})$? Recall that $\Sigma$ is the $8\times 8$ matrix whose entries are $\Sigma_{ij}=Cov(X_i,X_j)$. You don't actually have to create a $8\times 8$ matrix here, just explicitly define what each entry should be! \textbf{Give your answers to 4 decimal places}. Hint: Treat the diagonal and off-diagonal elements separately. 
+    \item What is $Var(Y)$? \textbf{Give your answer to 4 decimal places}. Hint: Covariances should be involved. 
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item We'll do some exercises to practice using MGFs.
+\begin{enumerate}
+    \item Compute the MGF of $U\sim Exp(\lambda)$ using the definition $M_U(t)=E[e^{tU}]$. Be careful to specify where the MGF exists (is finite); for some values of $t$, the integral may diverge.
+    \item Compute the MGF of $V\sim Gamma(r,\lambda)$, $M_V(t)$, where $r$ is a positive integer. (Hint: Use your answer to (a)).
+    \item Use the MGF (\textit{moment generating} function) of $V$ to compute $E[V]$ and $Var(V)$ (through $E[V^2]$). You may use WolframAlpha to take the derivative(s) for you but explicitly write out what calculations you are doing.
+    \item \textbf{(Extra Credit)} Recall the uniqueness property of MGFs: if $M_X(t)=M_Y(t)$ for all $t\in(-\varepsilon,\varepsilon)$ for some $\varepsilon>0$, then $X$ and $Y$ have the same distribution. The proof of this is way out of the scope of this class, but we can prove it for a special case. Suppose $X,Y$ are discrete rvs with range $\Omega=\{0,1,2,...,m\}$ whose MGFs are equal everywhere. Show that $p_X(k)=p_Y(k)$ for all $k\in\Omega$. Hints: A few steps in, let $a_k=p_X(k)-p_Y(k)$ and rewrite $e^{tk}$ as $(e^t)^k$. What do you know about the number of roots of an $m^{th}$ degree polynomial?
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+    
+\item Use the Central Limit Theorem to approximate the following probabilities, and \textbf{state explicitly at which step you invoke it}. Use the continuity correction if and only if it is necessary.
+\begin{enumerate}
+    \item The Internet fire marshal has declared that if too many people show up to my Zoom office hours, it would constitute a fire hazard. There are 234 students registered in the class.  On the day homework is due, each student comes to my office hour with probability 1/6, independently of the other students.  What is the approximate probability that between 37 and 41 people (inclusive) come to my office hours? \textbf{Give your answer to 4 decimal places.}
+    \item A fair 6-sided die is repeatedly rolled until the total sum of all the rolls reaches 180. What is the approximate probability that \textit{at least} 49 rolls are necessary to reach a sum that reaches 180?  \textbf{Give your answer to 4 decimal places.} Hint: Try to come up with an equivalent statement where the number of die rolls is fixed and not random.
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item You’re a cutting-edge geneticist who just invented an Animal Generator, which has an important compartment for figurines. There are 20 figurines of each type of small animal (turtle, duck, platypus) and 10 figurines of each type of large animal (bear, lion, bison, dragon), for a total of 100 figurines.  When you click Go, it randomly chooses a figurine from the compartment and creates a real animal of that species. 
+\begin{enumerate}
+    \item Your machine actually consumes a figurine during the process of creating that animal. If you run the machine 15 times (so you are left with 85 figurines at the end), what is the probability you end up with exactly 3 animals from one species and exactly 2 animals of each of the other species? \textbf{Give your answer to 4 decimal places.}
+    \item You figured out how to prevent that machine from consuming the figurine when creating an animal. If you run the machine 15 times (so you still have 100 figurines at the end), what is the probability you end up with exactly 3 animals from one species and exactly 2 animals of each of the other species? \textbf{Give your answer to 4 decimal places.}
+\end{enumerate}
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+
+\pagebreak
+
+\item A \textbf{discrete-time stochastic process (DTSP)} is a sequence of random variables $X_0,X_1,X_2,...$, where $X_t$ is the value at time $t$. For example, the temperature in Seattle or stock price of TESLA each day, or which node you are at after each time step on a random walk on a graph. 
+
+In Figure 1, we have a graph with 5 nodes. Suppose we start at node $1$, and at each time step, independently step to a neighboring node (with equal probability). For example; $X_0=1$ if we start at node $1$, then $X_1$ could be either $2$ or $3$ (but not 4 or 5), etc. In fact, this DTSP has lots of nice properties, and is actually an example of a special type of DTSP called a \textbf{Markov Chain}, since it satisfies three properties:
+\begin{enumerate}[label=\Roman*.]
+    \item We only have finitely many states (we have $5$ in this example: $\{1,2,3,4,5\}$).
+    \item We don’t care about the past, given the present (in this example, at each time step, the distribution of where we go next ONLY depends on where we are currently).
+    \item The transition probabilities are the same at every time step (in our example if we're at node 1, we go to node 2 or node 3 with probability 1/2, \textit{regardless of what time it is}). For example, if we start at state $1$ (meaning $X_0=1$),  and we are also in state $1$ at time $t=152$ (meaning $X_{152}=1)$), the probabilities of transitioning to 2 or 3 remain the same at $1/2$ each.
+\end{enumerate}
+\begin{figure}[h]
+\caption{Random Walk on a Graph}
+\centering
+\includegraphics[width=0.25\textwidth]{/home/images/random_walk.png}
+\end{figure}
+
+Formally, a \textbf{Markov Chain} is a DTSP, with the additional following three properties:
+\begin{enumerate}[label=\Roman*.]
+    \item ...has a finite (or countably infinite) \textbf{state space} $\mathcal{S}=\{s_1,\dots,s_n\}$ which it bounces between, so each $X_t\in\mathcal{S}$.
+    \item ...satisfies the \textbf{Markov property}. A DTSP satisfies the Markov property if the future is (conditionally) independent of the past given the present. Mathematically, it means, $P(X_{t+1}=x_{t+1}|X_0=x_0,X_1=x_1,\dots,X_{t-1}=x_{t-1},X_t=x_t)=P(X_{t+1}|X_t=x_t)$. 
+    \item ...has \textbf{stationary transition probabilities}. Meaning, if we are at some state $s_i$, we transition to another state $s_j$ with probability \textit{independent} of the current time. Due to this property and the previous, the transitions are governed by $n^2$ probabilities: the probability of transitioning from one of $n$ current states to one of $n$ next states. These are stored in a square $n\times n$ \textbf{transition probability matrix (TPM)} $P$, where $P_{ij}=P(X_{t+1}=s_j|X_t=s_i)$ is the probability of transitioning from state $s_i$ to state $s_j$ for any/every value of $t$.
+\end{enumerate}
+
+\pagebreak
+
+\begin{enumerate}
+    \item Suppose we perform a random walk on the Graph from figure 1. Fill out the $5\times 5$ transition probability matrix $P$ in Figure 2 with simplified fractions; we've filled out the first row for you. The row represents the current state and the column represents the next state. So the first row represents our transition probabilities \textit{from} state 1 to the other five states. It has zero probability of transitioning to state 1,4, and 5, but equal $\frac{1}{2}$ probability of transitioning to 2 and 3.  Note: You are secretly computing the conditional PMF $P(X_{t+1}=j\mid X_t=i)$ for any $i,j\in\{1,2,3,4,5\}$ and fixed $t\in\{0,1,2,\dots\}$.
+    \item What is $P(X_2=4\mid X_0=1)$? Show your work; an intuitive answer is not sufficient. Hint: Condition on what $X_1$ is and use the LTP. %(Hint: Use a ``conditional version'' of the LTP that, if $B_1,B_2,\dots$ is a partition, $P(A|C)=\sum_iP(A|B_i,C)P(B_i|C)$. This is the same as $P(A)=\sum_iP(A|B_i)P(B_i)$, except that we just add conditioning on $C$ everywhere).
+    \item Suppose we weren't sure where we started. That is, let $v=\left(\dfrac{1}{5},\dfrac{1}{5},\dfrac{1}{5},\dfrac{1}{5},\dfrac{1}{5}\right)$ be such that $P(X_0=i)=v_i$, where $v_{i}$ is the $i^{\text{th}}$ element of $v$ (i.e., we start at one of the 5 positions uniformly at random). Think of this vector $v$ as our belief distribution of where we are at time $t=0$. First, compute $vP$, the matrix-product of $v$ and $P$, the transition probability matrix. What does $v P$ represent? If you haven't taken linear algebra yet, don't worry: $v P$ is the following 5-dimensional row vector:
+    $$v P=\left(\sum_{i=1}^5{P_{i1}v_i},\quad\sum_{i=1}^5{P_{i2}v_i},\quad\sum_{i=1}^5{P_{i3}v_i},\quad\sum_{i=1}^5{P_{i4}v_i},\quad\sum_{i=1}^5{P_{i5}v_i}\right)$$
+    Give your answer to the first question as \textbf{5 simplified fractions}.
+    \newline Hint 1: You can approach this by substituting each $P_{ij}=P(X_1=j\mid X_0=i)$ since the TPM works for any time $t$. For example, the third of the 5 entries in $vP$ is actually just $\sum_{i=1}^5{P(X_1=3|X_0=i)P(X_0=i)}$ after additionally plugging in $P(X_0=i)$ for $v_i$.
+    \newline Hint 2: The intepretation of what $vP$ represents is very nice and simple.
+    \item The \textbf{stationary distribution} of a Markov chain is the $|\mathcal{S}|$-dimensional row vector $\pi$ such that the matrix equation $\pi P=\pi$ holds (and $\pi$ is a valid probability mass function). For our example, $\pi=(\pi_1,\pi_2,\pi_3,\pi_4,\pi_5)$ is 5-dimensional, and contains 5 probabilities which sum to 1. The intuition/interpretation of $\pi$ is that it gives the probabilities of being in each state in the ``long run''. That is, for $t$ large enough, $\pi_i=P(X_t=i)=P(X_{t+1}=i)=P(X_{t+2}=i)=\dots$. For example, if $\pi=(0.25, 0.15, 0.45, 0.05, 0.1)$, then after a ``long time'', we expect to be in state 2 with probability $0.15$ at \textit{every} time step. Using your answer to the previous part, explain in 1-2 sentences why solving $\pi P=\pi$ would give us the stationary distribution. 
+
+\end{enumerate}
+
+\begin{figure}[h]
+\caption{Transition Probability Matrix $P$ of Random Walk}
+$$P=\begin{bmatrix}
+0 & 1/2 & 1/2 & 0 & 0 \\
+\todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} \\
+\todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} \\
+\todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} \\
+\todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} & \todo{TODO} \\
+\end{bmatrix}$$
+\end{figure}
+\begin{tcolorbox}
+\begin{enumerate}
+\setcounter{enumii}{1}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+
+\item $[$\textbf{Coding+Written}$]$ Markov Chain Monte Carlo (MCMC) is a technique which can be used to solve hard optimization problems (among other things). The general strategy is as follows:
+\begin{enumerate}[label=\Roman*.]
+    \item Define a Markov Chain with states being possible solutions, and (implicitly defined) transition probabilities that result in the stationary distribution $\pi$ having higher probabilities on ``good'' solutions to our problem. We don't actually compute $\pi$, but we just want to define the Markov Chain such that the stationary distribution would have higher probabilities on more desirable solutions.
+    \item Run MCMC (simulate the Markov Chain for many iterations until we reach a ``good'' state/solution). This means: start at some initial state, and transition according to the transition probability matrix (TPM) for a long time. This will eventually take us to our stationary distribution which has high probability on ``good'' solutions!
+\end{enumerate}
+In this question, we'll figure the best route (minimizing total distance travelled) between the 50 state capitals that we want to visit after quarantine ends! A valid route starts and ends in the same state capital, and visits each capital exactly once (this is known as the \textbf{travelling salesman problem (TSP)}, and is known to be NP-Hard). In \code{us\_capitals.txt}, you'll find 50 rows, with each row containing the name of the state capital (string), and its latitude and longitude (floats). Assume that the distance between two capitals is the standard Euclidean distance (straight-line distance). The distance of a route is the total distance from the first capital to the second, second to the third, and all the way back to the first (a loop).
+
+You will implement an MCMC algorithm which attempts to solve this NP-Hard problem: the travelling salesman tour of the state capitals.  Pseudocode is provided below, and a detailed explanation is provided immediately after. 
+\begin{algorithm}
+\caption{MCMC for Visiting State Capitals (TSP)}
+\begin{algorithmic}[1]
+\State $\textsf{route}\gets$ random permutation of the $N=50$ state capitals.
+\State $\textsf{best\_route}\gets$ $\textsf{route}$
+\For {$i=1,\dots,\textsf{NUM\_ITER}$}
+\State $\textsf{new\_route}\gets\textsf{route}$; but with two successive capitals in \textsf{route} swapped.
+\State $\Delta\gets \textsf{dist}(\textsf{new\_route})-\textsf{dist}(\textsf{route})$
+\If {$\Delta<0$ OR ($T>0$ AND $Unif(0,1)<e^{-\Delta/T}$)}
+\State $\textsf{route}\gets\textsf{new\_route}$
+\EndIf
+\If {$\textsf{dist}(\textsf{route}) < \textsf{dist}(\textsf{best\_route})$}
+\State $\textsf{best\_route}\gets\textsf{route}$
+\EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+The MCMC algorithm will have a ``temperature'' parameter $T$ which controls the trade-off between exploration and exploitation. The state space $\mathcal{S}$ will be the set of all possible valid routes (permutations of $50$ capitals). We will start with a random state (route). At at each iteration, propose a new state (route) as follows: choose a random index from $\{1,2,\dots,50\}$, and swap that capital with the successive (next) capital in the route, possibly with wraparound if index $50$ is chosen. If the proposed route has lower total distance (is better) than the current route, we will always transition to it (exploitation). Otherwise, if $T>0$, with probability $e^{-\Delta/T}$, update the current route to the proposed route, where $\Delta>0$ is the increase in total distance. This allows us to transition to a ``worse'' route occasionally (exploration), and get out of local optima! Repeat this for NUM\_ITER transitions from the initial state (route), and output the shortest route during the entire process (which may not be the last route). 
+
+
+
+\begin{enumerate}
+    \item What is the size of the Markov Chain's state space $\mathcal{S}$ (the number of possible routes)? As $\textsf{NUM\_ITER}\to\infty$, are you guaranteed to eventually see all the routes (consider the cases of $T=0$ and $T>0$ separately)? Briefly justify your answers.
+    \item Let's try to figure out what the temperature parameter $T$ does. 
+    \begin{enumerate}
+        \item Suppose $T=0$. Will we ever get to a worse route than before as we transition?
+        \item Suppose $T>0$. For a fixed $T$, does the probability of transitioning to a worse route increase or decrease with larger values of $\Delta$? For a fixed $\Delta$, does the probability of transitioning to a worse route increase or decrease with larger values of $T$? Explain briefly how the temperature parameter $T$ controls the degree of exploration we do.
+    \end{enumerate}
+    \item Implement the functions \code{distance} and \code{mcmc} in \code{cse312\_pset4\_mcmc.py}. You will be experimenting with two types of transitions, determined by the boolean parameter \code{succ\_only} (``successive only''). 
+    \begin{enumerate}
+        \item If it is True, you will execute a random transition as described in the pseudocode.  That is, choose a random index $i\in\{1,2,\dots,50\}$ and swap $\textsf{route}[i]$ with\\ $\textsf{route}[(i+1) \textsf{ mod } 50]$.
+        \item If it is False, you will instead choose ANY two random capitals (not just successive ones in the current route) and swap their positions. That is, choose two independent random indices $i,j\in\{1,2,\dots,50\}$ and swap $\textsf{route}[i]$ with $\textsf{route}[j]$ (it's possible that $i=j$.)
+    \end{enumerate}
+    You must use \code{np.random.rand()} to generate a continuous $Unif(0,1)$ rv, and\\ \code{np.random.randint(low (inclusive), high (exclusive))} to generate your random index(es). Make sure to read the documentation and hints provided! You \textbf{must use this strategy exactly} to get full credit - we will be setting the random seed so that everyone should get the same result if they follow the pseudocode.
+    \item In the \code{main} function at the bottom, set \code{succ\_only=True} to allow only transitions between successive capitals. For $T\in\{0,1,5,10\}$, we've called the \code{make\_plot} function to make a plot where the x-axis is the iteration number, and the y-axis is the current route distance (not necessarily the current best), for \code{ntrials=10} different runs of MCMC. You should attach 4 plots which are generated for you (one per temperature), and each plot should have 10 curves (one per trial). For which value of $T$ did we get the best route, and what was the best distance achieved for that value of $T$?
+    \item In the \code{main} function at the bottom, set \code{succ\_only=False} to allow transitions between ANY two capitals. For $T\in\{0,1,5,10\}$, we've again called the \code{make\_plot} function. Attach the 4 plots generated for you for this strategy. For which value of $T$ did we get the best route, and what was the best distance achieved for that value of $T$?
+    \item Which version of transitions (toggled with the boolean \code{succ\_only}) performed better overall, and why do you think this is? The optimal temperature parameter $T$ was different in the two cases - why do you think this is?  An informal, one-two sentence justification is sufficient for each question.
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item Nothing to put here.
+
+\item \todo{TODO: Your Solution Here}
+% Uncomment these lines after adding the 4 files.
+% This creates a 2x2 grid of the 4 image names of the 
+% plots which are generated for you automatically.
+% \begin{center}
+% \captionsetup{type=figure}
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=0_succ.png}
+% \centering
+% \caption*{Route Distance with $T = 0$.}
+% \end{subfigure}%
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=1_succ.png}
+% \centering
+% \caption*{Route Distance with $T = 1$.}
+% \end{subfigure}\\
+% \vspace{5mm}
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=5_succ.png}
+% \centering
+% \caption*{Route Distance with $T = 5$.}
+% \end{subfigure}%
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=10_succ.png}
+% \centering
+% \caption*{Route Distance with $T = 10$.}
+% \end{subfigure}
+% \end{center}
+
+
+\item \todo{TODO: Your Solution Here}
+
+% Uncomment these lines after adding the 4 files.
+% This creates a 2x2 grid of the 4 image names of the 
+% plots which are generated for you automatically.
+% \begin{center}
+% \captionsetup{type=figure}
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=0_any2.png}
+% \centering
+% \caption*{Route Distance with $T = 0$.}
+% \end{subfigure}%
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=1_any2.png}
+% \centering
+% \caption*{Route Distance with $T = 1$.}
+% \end{subfigure}\\
+% \vspace{5mm}
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=5_any2.png}
+% \centering
+% \caption*{Route Distance with $T = 5$.}
+% \end{subfigure}%
+% \begin{subfigure}{.5\linewidth}
+% \includegraphics[width=0.8\textwidth]{mcmc_T=10_any2.png}
+% \centering
+% \caption*{Route Distance with $T = 10$.}
+% \end{subfigure}
+% \end{center}
+
+
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item \textbf{(Extra Credit) $[$Coding+Written$]$} In Q9, we presented you with an MCMC algorithm to get an approximation of the shortest route that visits each capital city of 50 U.S. states once and returns to the original city. For this coding challenge, you will run this algorithm on a different dataset, \code{countries.txt}, which includes geographic coordinates of capital cities of 239 countries and territories in the world. Here are the steps:
+
+\begin{enumerate}[label=\Roman*.]
+    \item Experiment with different strategies for the TSP MCMC algorithm you implemented above (transition strategies, different temperatures, number of iterations, etc.), to get the shortest route you can for this new dataset!
+    \item In the ``PSet4 [EC Coding]'' assignment on Gradescope, turn in your order of capital cities that yields such distance in a \code{result.txt} file, where each line is a different country code (which means each line contains only one single entry). Because there are 239 countries and territories, your \code{result.txt} file must have exactly 239 lines.  In addition, please turn in \code{explanation.txt} which includes an explanation of your approach and \code{mcmc\_ec.py} which includes your code for the extra credit to ``PSet4 [EC Coding]''.
+\end{enumerate}
+After turning in your result, you will see how you perform compared to others in a leaderboard. Those who achieve shorter routes will be ranked higher. Because the operations of this algorithm are probabilistic and the state space is so large, it is highly unlikely that you will be able to find the optimal route, and randomness plays a role in whether you will achieve a better performance than your classmates. As a result, we don't encourage you to spend too much time on this problem, but rather to just have fun with it.
+
+\end{enumerate}
+
+\end{document}
+

@@ -1,0 +1,480 @@
+% LaTeX handouts by Alex Tsun for CSE 312 Summer 2020
+% at the University of Washington.
+% Based on B. E. Burr's Stanford CS 109 problem set template.
+
+\documentclass[12pt]{article}
+
+\usepackage{newtxtext,newtxmath}
+
+\usepackage{amsmath}
+	% packages that allow mathematical formatting
+\usepackage{comment}
+  % comment out sections
+\usepackage{multicol}
+
+
+% -----------------------------------
+% -----------------------------------
+% -----------------------------------
+% USE FOR SETTING FLAG
+\usepackage{etoolbox}
+
+% -----------------------------------
+% -----------------------------------
+% -----------------------------------
+\def\code#1{\textcolor{blue}{\texttt{#1}}}
+\def\todo#1{\textcolor{red}{\textbf{#1}}}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfigure}
+
+\usepackage{tikz}
+	% package that allows you to include graphics
+
+\usepackage[hidelinks]{hyperref}
+	% and links
+\usepackage{algpseudocode}
+  % and algorithms
+
+\usepackage[tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in]{geometry}
+\frenchspacing
+	% one space after periods
+\raggedbottom
+	% don't put extra space between sections
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{14.5pt}
+	% allows custom headers
+
+\lhead{}
+\rhead{-- \thepage{} --}
+\cfoot{}
+	% page numbering
+
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\large\itshape\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries}
+\titleformat*{\paragraph}{\normalsize\bfseries}
+\titleformat*{\subparagraph}{\normalsize\bfseries}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{3mm plus 3mm minus 1mm}
+\titlespacing*{\section}{0pt}{2mm plus 4mm minus 1mm}{-2mm plus 1mm minus 0mm}
+\titlespacing*{\subsection}{0pt}{0mm plus 4mm minus 1mm}{-2mm plus 1mm minus 0mm}
+\titlespacing*{\subsubsection}{0pt}{0mm plus 4mm minus 1mm}{-2mm plus 1mm minus 0mm}
+\titlespacing*{\paragraph}{0pt}{0mm plus 3mm minus 1mm}{1mm plus 1mm minus 0mm}
+  % adjust fonts and spacing
+
+\usepackage{framed}
+\begin{comment}
+\newenvironment{framed}
+    {
+    \hspace*{-3mm}
+    \begin{tabular}{|p{\textwidth}|}
+    \hline
+    }
+    {
+    \\[2mm]\hline
+    \end{tabular}
+    \vspace*{-2mm}
+    }
+  % boxes around paragraphs with titles
+\end{comment}
+
+\usepackage{textpos}
+\usepackage[super]{nth}
+\usepackage{mathtools}
+\usepackage{mathdots}
+
+
+
+\usepackage{textcomp}
+  % \textonehalf for '8 1/2" x 11"'
+
+\usepackage{enumitem}
+% \setlist{nolistsep}
+  % configure display of enumerations [a), b), c)...]
+\usepackage[normalem]{ulem}
+  % \sout{} for strikethrough
+\usepackage{booktabs}
+\usepackage{diagbox}
+  % configure display of tables
+
+\newcommand{\vocab}[1]{\textbf{#1}}
+\renewcommand{\|}{\mid}
+
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\bigO}{O}
+
+\newcommand{\Uni}{\operatorname{Uni}}
+\newcommand{\Ber}{\operatorname{Ber}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\Geo}{\operatorname{Geo}}
+\newcommand{\NegBin}{\operatorname{NegBin}}
+\newcommand{\Zipf}{\operatorname{Zipf}}
+\newcommand{\HypG}{\operatorname{HypG}}
+\newcommand{\Poi}{\operatorname{Poi}}
+\newcommand{\Beta}{\operatorname{Beta}}
+\newcommand{\N}{\operatorname{N}}
+\newcommand{\Exp}{\operatorname{Exp}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\makeatletter
+\newcommand{\ack}[1]{\def \@ack {#1}}
+\newcommand{\handoutid}[1]{\def \@handoutid {#1}}
+\newcommand{\spaceadjust}[1]{\def \@spaceadjust {#1}}
+\makeatother
+
+\ack{}
+\handoutid{}
+\spaceadjust{0mm}
+
+\title{PSet  \#2}
+
+\author{Alex Tsun}
+\date{Due: July 15, 2020}
+\ack{With problems from several past UW CSE 312 instructors (Martin Tompa, Anna Karlin, Larry Ruzzo) and Stanford CS 109 instructors (Chris Piech, David Varodayan, Lisa Yan, Mehran Sahami)\\}
+
+\usepackage[most]{tcolorbox}
+\tcbset{
+    frame code={},
+    colback=blue!10,
+    leftrule=0.5pt,
+    rightrule=0.5pt,
+    toprule=0.5pt,
+    bottomrule=0.5pt,
+    width=\dimexpr\textwidth\relax,
+    enlarge left by=0mm,
+    boxsep=5pt,
+    arc=0pt,outer arc=0pt,
+    breakable,
+    colframe=white,
+    }
+
+\begin{document}
+
+\makeatletter
+% the handout title goes here
+\begin{textblock*}{0.5\textwidth}(0\textwidth,0mm)
+\@author
+\end{textblock*}
+
+\begin{textblock*}{0.5\textwidth}(0\textwidth,5mm)
+CSE 312: Foundations of Computing II
+\end{textblock*}
+
+\begin{textblock*}{0.5\textwidth}(.5\textwidth,0mm)
+\hfill
+\@handoutid
+\end{textblock*}
+
+\begin{textblock*}{0.5\textwidth}(.5\textwidth,5mm)
+\hfill
+\@date
+\end{textblock*}
+
+\begin{center}
+\vspace*{2mm}
+{\Large \@title} \\
+\end{center}
+\vskip -9mm
+\vskip \@spaceadjust
+\rule{\textwidth}{0.5pt}
+
+\vspace*{-4mm}
+\hfill {\footnotesize \@ack}
+\makeatother
+
+\textbf{Name(s):} \todo{TODO: Your Name(s) Here}
+
+\textbf{Collaborators}: \todo{TODO: List your collaborators outside your group.}
+
+\textbf{Groups}: This pset may be done in groups of \textbf{up to 2 people}.  However, you can not work with the same partner you had in pset1. This means that only one person will submit on Gradescope to ``PSet 2 [Written]'' and add their partner as a collaborator. The coding part still must be done individually, so each group member will submit their own coding assignment ``PSet 2 [Coding]''. Individuals and groups are encouraged to discuss problem-solving strategies with other classmates as well as the course staff, but each group must write up their own solutions. 
+
+\textbf{Instructions}: For each problem, remember you must briefly explain/justify how you obtained your answer, as correct answers without an explanation will receive \textbf{no credit}. Moreover, in the event of an incorrect answer, we can still try to give
+you partial credit based on the explanation you provide. It is fine for your answers to include
+summations, products, factorials, exponentials, or combinations; you don’t need to calculate those
+all out to get a single numeric answer.
+
+\textbf{Submission}: You must upload your written compiled LaTeX PDF to Gradescope under ``PSet 2 [Written]'' (with your partner if applicable) and your two code files \code{cse312\_pset2\_gen\_rvs.py} and \code{cse312\_pset2\_nb.py}  to ``PSet2 [Coding]''. Extra credit can be submitted by groups or individuals in their ``PSet 2 [Written]''. You must tag your written problems on Gradescope, or you will receive \textbf{no credit} as mentioned in the syllabus. Please cite any collaboration at the top of your submission (beyond your group members, which should already be listed).
+
+\begin{enumerate}
+
+    \item Match the following to the most appropriate distribution (from the Zoo of Discrete RVs), \textbf{including parameters} (e.g., your answer should be in the form like $NegBin(30, 0.2)$, or $Poi(100)$ for example). Distributions may be used more than once or not at all. Suppose there are $B$ blue fish, $R$ red fish, $G$ green fish in a pond, where $B+R+G=N$. \textbf{You do not need to show work for this problem}. 
+    \begin{enumerate}
+        \item How many of the next 10 fish I catch are blue, if I catch and release.
+        \item How many fish I had to catch until my first green fish, if I catch and release.
+        \item How many red fish I catch in the next \textbf{five} minutes, if I catch on average $r$ red fish per minute, if I catch and release.
+        \item Whether or not my next fish is blue, if I catch and release.
+        \item How many fish I had to catch until my third red fish, if I catch and release.
+        \item How many red fish I caught in one scoop of a net containing $M$ fish.
+    \end{enumerate}
+    
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+    
+    \item Do these parts \textbf{independently} of each other. These are routine but necessary calculations to test your understanding of mean and variance and your ability to apply formulae.
+    \begin{enumerate}
+        \item Let $X$ be a random variable with $p_X(k)=ck$ for $k\in\{1,\dots,5\}=\Omega_X$, and $0$ otherwise. Find the value of $c$ that makes $X$ a valid PMF and compute its mean and variance ($E[X]$ and $Var(X)$).
+        \item Let $X$ be \textit{any} random variable with mean $E[X]=\mu$ and variance $Var(X)=\sigma^2$. Find the mean and variance of $Z=\dfrac{X-\mu}{\sigma}$. (When you're done, you'll see why we call this a ``standardized'' version of $X$!)
+        \item Let $X,Y$ be independent random variables. Find the mean and variance of $X-3Y-5$ in terms of $E[X],E[Y],Var(X)$, and $Var(Y)$.
+        \item Let $X_1,\dots,X_n$ be independent and identically distributed (iid) random variables each with mean $\mu$ and variance $\sigma^2$. The sample mean is $\bar{X}=\frac{1}{n}\sum_{i=1}^n{X_i}$. Find the mean and variance of $\bar{X}$. If you use the independence assumption anywhere, \textbf{explicitly label} at which step(s) it is necessary for your equalities to be true.
+    \end{enumerate}
+    
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item There are $n$ different Pokemon cards available.  Each is sold
+  \textit{individually} in identical packaging, so that you cannot tell which
+  one you will get until you buy it and open the package.  Suppose
+  that each of the $n$ cards is equally probable whenever you buy one.
+  Let random variable $X$ be the number of cards Alex buys until he
+  has a complete set of $n$.  What is $E[X]$?  (Hint: Define random
+  variable $X_i$ (for $i=1,\dots,n$) as the number of cards bought from the first time
+  Alex has $i-1$ different cards up to and including the first time he
+  has $i$ different cards. $X_i$ is which random variable in our zoo?)
+
+  The $n$-th {\em harmonic number} is defined as $H_n = 1 + 1/2 + 1/3
+  + 1/4 + \cdots + 1/n$.  For your interest, as a function of $n$,
+  $H_n$ grows very similarly to $\ln n$.  If you are curious, this is because $\sum_{i=1}^n{\frac{1}{i}}\approx\int_1^{n+1}{\frac{1}{x}dx}=\ln(n+1)$).  Give your answer as a function of one of these harmonic
+  numbers.
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+    
+    \item Let $X_1,\dots,X_5$ be five independent rolls of a fair six-sided die. Define $Y=\min\{X_1,\dots,X_5\}$, the smallest value. 
+    \begin{enumerate}
+        \item Compute $P(Y\ge k)$ for $k=1,\dots,6$. (Hint: You may want to start with the ``easier'' values of $k=6$ and $k=1$ before the others).
+        \item Use your answer to part (a) to compute $p_Y(k)=P(Y=k)$ for $k=1,\dots,6$. (Hint: Start with $p_Y(6)$ and work downwards. What's the pattern?)
+        \item Show that if $Z$ is a \textbf{nonnegative, integer-valued} random variable, that $E[Z]$ can also be computed using the formula $E[Z]=\sum_{k=0}^\infty{P(Z>k)}=\sum_{k=1}^\infty{P(Z\ge k)}$. (Hint: Do this by writing out each term in the sum $E[Z]=\sum_{k=0}^\infty{k\cdot p_Z(k)}$, one per line like below.)
+        \begin{verbatim}
+1p(1) = p(1)
+2p(2) = p(2)+p(2)
+3p(3) = p(3)+p(3)+p(3)
+4p(4) = p(4)+p(4)+p(4)+p(4)
+...
+        \end{verbatim}
+    \item Now compute $E[Y]$ using your answers to part (a) and (c). You may wish to verify your answer by computing it the ``normal way'' using your answer to part (b).
+    \end{enumerate}
+    
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+    
+    \item You’re playing minigolf for the very first time. You play a total of 18 holes. Your score on each hole is the number of strokes you need to get the ball in the hole. Since you’re a novice, the success of each of your strokes is independent. For the first 9 holes, each stroke has 20\% chance of getting the ball in the hole. For the last 9 holes, you improve slightly and each stroke has 25\% chance of success.
+    \begin{enumerate}
+        \item What is the probability that you take more than 4 strokes to complete the first hole? (Hint: Use a random variable from our zoo!)
+        \item A hole-in-one happens when your score for a hole is 1; that is, you get the ball in the hole on your first attempt. What is the probability that you get exactly one hole-in-one as you play all 18 holes? (Hint: Use a random variable from our zoo, but with some massaging first!)
+        \item Given that your cumulative score after the first 9 holes is 50 strokes, what is the probability that your total score after all 18 holes will be exactly 80 strokes? (Hint: Use a random variable from our zoo, but with some massaging first!)
+    \end{enumerate}
+    
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+    
+    \item You have 8 pairs of mittens, each a different color. Left and right mittens are \textit{distinct}. Suppose
+that you are fostering (possibly imaginary) kittens, and you leave them alone for a few hours with
+your mittens. When you return, you discover that they have hidden 4 mittens! Suppose that your
+kittens are equally likely to hide any 4 of your 16 distinct mittens. Let $X$ be the number of complete,
+distinct pairs of mittens that you have left.
+\begin{enumerate}
+    \item Compute the probability mass function of $X$, $p_X(k)$. (Hint: You may want to first figure out the range $\Omega_X$).
+    \item Find $E[X]$ using your answer to part (a) and the definition of expectation.
+    \item Find $E[X]$ again, but using linearity of expectation this time and indicator RVs. Are these indicator RVs independent? Rhetorical (answering this next part is optional): Which method was easier? What if I increased the number of pairs of mittens?
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\item Suppose that it requires at least 10 out of 12 votes from a jury to convict a defendant (i.e., if there are at least 10 guilty votes, the defendant is found guilty; but if there are 9 or less guilty votes, they are found innocent). In addition, suppose that a juror votes innocent for a guilty defendant with probability 0.2, and they vote guilty for an innocent defendant with probability 0.15. Assuming each juror votes independently, and that 75\% of defendants are actually guilty, find the probability that the jury renders the correct decision. (Hint: Let $C$ be the event the jury is correct, and consider two cases).
+
+\begin{tcolorbox}
+\todo{TODO: Your Solution Here}
+\end{tcolorbox}
+
+\item UberPool gets 1 requests every \textbf{two} minutes, on average, for a particular route. A user requests this route and Uber commits a driver to take her. Any user who also requests the route in the next \textbf{five} minutes will also be added to the car as long as there is space.  The car can fit up to five people including the driver.
+Uber will make \$10 for each user in the car (the revenue) minus \$12 (the operating cost). What is Uber's expected profit per ride? (Hints: The number of requests is unbounded, but the number of passengers is bounded. The answer is not \$13.)
+
+\begin{tcolorbox}
+\todo{TODO: Your Solution Here}
+\end{tcolorbox}
+
+\item To determine whether they have llama flu, 1000 people have their blood tested. However, rather than testing each individual separately (1000 tests is quite costly), it is decided to use a group testing procedure:
+\begin{itemize}
+    \item Phase 1: First, place people into groups of 5. The blood samples of the 5 people in each
+group will be pooled and analyzed together. If the test is positive (at least one person
+in the pool has llama flu), continue to Phase 2. Otherwise send the group home. 200 of these pooled tests are performed.
+\item Phase 2: Individually test each of the 5 people in the group. 5 of these individual tests are performed per group in Phase 2.
+\end{itemize}
+Suppose that the probability that a person has llama flu is 5\% for all people, independently
+of others, and that the test has a 100\% true positive rate and 0\% false positive rate (note
+that this is unrealistic). Using this strategy, compute the expected total number of blood tests
+(individual and pooled) that we will have to do across Phases 1 and 2.
+
+\begin{tcolorbox}
+\todo{TODO: Your Solution Here}
+\end{tcolorbox}
+
+\item A building has $n$ floors numbered 1, 2, \ldots, $n$, plus a basement parking level $B$. At the basement, $m$ people get on the elevator together. Each gets off at one of the $n$ floors with equal probability (independently of everybody else). No-one else gets on the elevator. What is the expected number of floors the elevators stops at (not counting the basement)? (Hint: linearity of expectation.) 
+    
+\begin{tcolorbox}
+\todo{TODO: Your Solution Here}
+\end{tcolorbox}
+    
+    \item Mia and Nia are two roommates who live in the room directly above yours. They aren't friends, so whether each is in their room is \textbf{independent} of the other being in the room.
+    \begin{enumerate}
+        \item On \textbf{Saturday} night Mia goes out with probability $\frac{3}{4}$ and Nia goes out with probability $\frac{2}{3}$. What is the probability that \textbf{exactly one} of the roommates is in their room on Saturday night?
+        \item On \textbf{Sunday} night the probability that exactly one roommate is in their room is 0.5 and the probability than both are in is 0.1. When one roommate is in, she stomps loudly on the floor at an average rate of 3 stomps per hour. When both are in, they stomp at a combined average rate of 6 stomps per hour. Assume the number of stomps per hour are Poisson-distributed. You listen for an hour on Sunday night and hear no stomps coming from upstairs. Given this information, what is the probability that \textbf{exactly one} of the roommates is in their room on Sunday night?
+    \end{enumerate}
+    
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\pagebreak
+    \item Below are two sequences of Heads and Tails, each (supposedly) representing 300 independent flips of a fair coin. One of these sequences was truly randomly created, and one was typed by a human. Both sequences have exactly 149 heads. Which one is more likely to be the ``real'' random sequence? (Hint: You will want to write some code!) Include any code you wrote (using Python3) below in your write-up, and justify your reasoning with evidence, including plots if you made any. There are multiple valid and correct approaches.
+
+\begin{enumerate}
+    \item (Sequence 1)
+    \begin{verbatim}
+TTHHTHTTHTTTHTTTHTTTHTTHTHHTHHTHTHHTTTHHTHTHTTHTHHTTHTHHTHTT
+THHTTHHTTHHHTHHTHTTHTHTTHHTHHHTTHTHTTTHHTTHTHTHTHTHTTHTHTHHH
+TTHTHTHHTHHHTHTHTTHTTHHTHTHTHTTHHTTHTHTTHHHTHTHTHTTHTTHHTTHT
+HHTHHHTTHHTHTTHTHTHTHTHTHTHHHTHTHTHTTHTHHTHTHTTHTTTHHTHTTTHT
+HHTHHHHTTTHHTHTHTHTHHHTTHHTHTTTHTHHTHTHTHHTHTTHTTHTHHTHTHTHH
+\end{verbatim}
+    \item (Sequence 2) \begin{verbatim}
+HTHHHTHTTHHTTTTTTTTHHHTTTHHTTTTHHTTHHHTTHTHTTTTTTHTHTTTTHHHH
+THTHTTHTTTHTTHTTTTHTHHTHHHHTTTTTHHHHTHHHTTTTHTHTTHHHHTHHHHHH
+HHTTHHTHHTHHHHHHHTTHTHTTTHHTTTTHTHHTTHTTHTHTHTTHHHHHTTHTTTHT
+HTHHTTTTHTTTTTHHTHTHHHHTTTTHTHHHHHHTHTHTHTHHHTHTTHHHTHHHHHHT
+HHHTHTTTHHHTTTHHTHTTHHTHHHTHTTHTTHTTTHHTHTHTTTTHTHTHTTHTHTHT
+\end{verbatim}
+\end{enumerate}
+
+\begin{tcolorbox}
+\begin{enumerate}
+\item \todo{TODO: Your Solution Here}
+\item \todo{TODO: Your Solution Here}
+\end{enumerate}
+\end{tcolorbox}
+
+\pagebreak
+\item \textbf{$[$Coding$]$} Understanding the process that leads to different random variables is a great way to gain
+familiarity for what they mean. For each random variable, write a function that simulates its
+generation process. Your function should return a random sample of that rv, with the appropriate probability. The \textbf{only} function you \textbf{can and should} use to generate randomness is np.random.rand(): a function that returns a
+uniform random float in the range $[0, 1]$. We include a solution to (a) in the starter code.
+Note that a function from one part may call a function from a previous part if you wish. For more clarity, we are asking you to generate a random sample from a particular distribution; multiple calls to your function can and should return different values in its range, approximately matching that variable's probability mass function.
+
+Write your code for the following parts in the provided file: \code{cse312\_pset2\_gen\_rvs.py}
+\begin{enumerate}
+    \item $X\sim Ber(p)$: 1 with probability $p$ and 0 with probability $1-p$. Implement the function \code{gen\_ber}.
+    \item $X\sim Bin(n,p)$: the number of heads in $n$ independent flips of a coin with probability of heads $p$. Implement the function \code{gen\_bin}.
+    \item $X\sim Geo(p)$: the number of flips up to and including the first head, when the probability of heads is $p$. Implement the function \code{gen\_geo}.
+    \item $X\sim NegBin(r,p)$: the number of flips up to and including the $r$-th head, when the probability of heads is $p$. Implement the function \code{gen\_negbin}.
+    \item $X\sim HypGeo(N,K,n)$: the number of kit kats you get when you grab $n$ from a bag consisting of $N$ total candies, only $K$ of which are kit kats. Implement the function \code{gen\_hypgeo}.
+    \item $X\sim Poi(\lambda)$: the number of events in a minute, where the historical rate is $\lambda$ events per minute. (Hint: Recall how we derived the Poisson PMF, and break the minute down into 2500 ms events). Implement the function \code{gen\_poi}.
+    \item Given an arbitrary list (or numpy array) of probabilities, like $ps=[0.1, 0.3, 0.4, 0.2]$, sample an index with the appropriate probability. That is, return 0 with probability 0.1, 1 with probability 0.3, 2 with probability 0.4, and 3 with probability 0.2. Implement the function \code{gen\_arb}.
+\end{enumerate}
+
+\pagebreak 
+\item \textbf{$[$Coding$]$} Use the Naive Bayes Classifier to implement a spam filter that learns
+word spam probabilities from our pre-labeled training data and then
+predicts the label (ham or spam) of a set of emails that it hasn't
+seen before. See the slides from section 2 for details on implementation!
+
+Write your code for the following parts in the provided file: \code{cse312\_pset2\_nb.py}.
+
+    \textbf{Some notes and advice:}
+    
+    \begin{itemize}
+        \item Read about how to avoid floating point underflow using the log-trick in the notes.
+        \item Make sure you understand how Laplace smoothing works.
+        \item Remember to remove any debug statements that you are
+          printing to the output.
+        \item \textbf{Do not directly manipulate file paths or use
+          hardcoded file paths.}  A file path you have hardcoded into
+          your program that works on your
+          computer won't work on the computer we use to test your
+          program.
+        \item Needless to say, you should practice what you've learned
+          in other courses: 
+        document your program, use good variable names, keep your code
+        clean and straightforward, 
+        etc.  Include comments outlining what your program does and
+        how. We will not spend time 
+        trying to decipher obscure, contorted code.  Your score on Gradescope is your final score, as you have unlimited attempts. \textbf{START EARLY}.
+        \item We will evaluate your code on data you don't have access to, in addition to the data you are given. 
+    \end{itemize}
+
+Remember, it is not expected that Naive Bayes will classify every single
+    test email correctly, but it should certainly do better than random chance! As this algorithm is deterministic, you should get a certain specific test accuracy around 90-95\%, which we will be testing for to ensure your algorithm is correct. Note that we will run your code on a test dataset you haven't seen, but you will know immediately if you got full score.
+ \begin{enumerate}
+\item Implement the function \code{fit}.
+\item Implement the function \code{predict}.
+
+\end{enumerate}
+
+\item \textbf{(Extra Credit)}: If you worked with a partner that you were randomly paired with during a social event or through the partner survey, attach a screenshot here to get extra credit! If it was a social event zoom call, your screenshot must include the zoom meeting information to prove it was one of our social zoom meetings.
+\begin{tcolorbox}
+\todo{TODO: Your Screenshot Here If Applicable (Uncomment the below lines)} 
+% \begin{center}
+% \includegraphics[width=0.3\textwidth]{images/MY_FILENAME.png}
+% \end{center}
+\end{tcolorbox}
+
+\end{enumerate}
+
+
+\end{document}
+
